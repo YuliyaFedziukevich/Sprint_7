@@ -1,11 +1,15 @@
 import allure
 import pytest
 from endpoints.create_courier import CreateCourier
+from endpoints.order_endpoints import OrderEndpoint
 from helper.generator import GeneratorUserData
 from helper.test_data import TestData
+from helper.api import API
 
 test_data = TestData()
 generator_user_data = GeneratorUserData()
+order_endpoint = OrderEndpoint()
+api =API()
 
 @pytest.fixture(scope='function')
 def create_courier_data():
@@ -57,3 +61,14 @@ def create_courier_and_authorization():
     yield [create_courier_request_body, authorization_courier_request_body, login, password], create_courier
     with allure.step("Удаление курьера"):
         create_courier.delete_courier(courier_response.json()['id'])
+
+
+@pytest.fixture(scope='function', params=test_data.color_option)
+def create_order(request):
+    with allure.step('Добавление в тестовые данные цвета самоката'):
+        test_data.payload_order['color'] = request.param
+    # Создание заказа
+    response = order_endpoint.create_order(test_data.payload_order)
+    yield order_endpoint
+    with allure.step('Отмена заказа'):
+        order_endpoint.put(api.cancel_order, response.json())

@@ -19,11 +19,11 @@
 * - helper/api.py, helper/generator.py, helper/test_data.py, 
 * - tests/test_login_courier.py
 * 3 "Создание заказа"
-* - endpoints/base_endpoints.py, 
+* - endpoints.order_endpoints.py, 
 * - helper/api.py, helper/test_data.py, 
 * - tests/test_order.py
 * 4 "Список заказов"
-* - endpoints/base_endpoints.py,
+* - endpoints.order_endpoints.py, ,
 * - helper/api.py,
 * - tests/test_order_list.py
 
@@ -31,6 +31,7 @@
 * 1 **endpoints** - содержит методы и шаги, используемые для тестирования:
 * -  base_endpoints.py - общие методы для тестирования;
 * - create_courier.py - методы для тестирования курьера (создание, авторизация);
+* - order_endpoints.py - - методы для тестирования заказов;
 * 2 **helper** - содержит тестовые данные, используемые в обоих сценариях:
 * - api.py - перечень используемых при тестировании api;
 * - generator.py - содержит класс с методами для генерирования данных для курьера;

@@ -1,12 +1,10 @@
 import allure
 import pytest
 from endpoints.create_courier import CreateCourier, ChangedData
-from helper.generator import GeneratorUserData
 from helper.test_data import TestData
 
 create_courier = CreateCourier()
 changed_data = ChangedData()
-generator_user_data = GeneratorUserData()
 
 class TestCouriersLogin:
     @allure.title('Успешная авторизация курьера с заполнением всех обязательных полей, ручка - /api/v1/courier/login')
@@ -50,10 +48,9 @@ class TestCouriersLogin:
 
     @allure.title('Успешная авторизация несуществующего курьера невозможна, ручка - /api/v1/courier/login')
     def test_successful_authorization_of_non_existent_courier_not_possible(self):
-        authorization_data = {
-            'login': generator_user_data.create_login_courier(),
-            'password': generator_user_data.create_password_courier()}
+        # Генерирование случайных авторизационных данных - логина и пароля
+        new_authorization_data = create_courier.generate_authorization_data()
         # Авторизация курьера
-        create_courier.check_courier_authorization(authorization_data)
+        create_courier.check_courier_authorization(new_authorization_data)
         # Проверка, что учетная запись не найдена - код статуса ответа - 404, а в теле ответа - ('Учетная запись не найдена')
         create_courier.check_user_not_found()

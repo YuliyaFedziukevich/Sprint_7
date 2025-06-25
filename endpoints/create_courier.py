@@ -22,7 +22,21 @@ class CreateCourier(Endpoint):
     def check_courier_authorization(self, authorization_data):
         return self.post(api.couriers_login, authorization_data)
 
+    @allure.step('Генерирование случайных авторизационных данных - логина и пароля')
+    def generate_authorization_data(self):
+        authorization_data = {
+            'login': generator_user_data.create_login_courier(),
+            'password': generator_user_data.create_password_courier()}
+        return authorization_data
+
 class ChangedData:
+    @allure.step('Создание копии регистрационных данных для изменения пароля и имени')
+    def changing_password_first_name_data(self, creating_courier_data):
+        changed_create_courier_data = creating_courier_data.copy()
+        changed_create_courier_data['password'] = generator_user_data.create_password_courier()
+        changed_create_courier_data['firstName'] = generator_user_data.create_first_name_courier()
+        return changed_create_courier_data
+
     @allure.step('Создание копии авторизационных данных для изменения логина и/или пароля')
     def changing_data(self, authorization_data, cmd, index):
         new_payload_authorization = [
