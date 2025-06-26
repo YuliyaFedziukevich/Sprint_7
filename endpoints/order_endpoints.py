@@ -14,3 +14,7 @@ class OrderEndpoint(Endpoint):
     @allure.step('Получение списка заказов')
     def get_list_of_orders(self):
         self.get(api.get_list_of_orders)
+
+    @allure.step('Отмена заказа')
+    def cancel_order(self, request):
+        self.put(api.cancel_order, request.json())
